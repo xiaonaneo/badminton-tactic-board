@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="../badminton-tactic-board/styles.css" />
+</head>
+<body>
+  <svg id="court"></svg>
+  <div id="result">pending</div>
+  <script src="../badminton-tactic-board/court.js"></script>
+  <script>
+    (function () {
+      const NS = 'http://www.w3.org/2000/svg';
+      const svg = document.getElementById('court');
+      window.COURT.render(svg, 'doubles');
+
+      function el(n, a) {
+        const e = document.createElementNS(NS, n);
+        for (const k in a) e.setAttribute(k, a[k]);
+        return e;
+      }
+
+      const marker = el('g', { class: 'marker', transform: 'translate(140,300)' });
+      marker.appendChild(el('circle', { r: 13, class: 'dot red' }));
+      const mtext = el('text', { class: 'label', 'text-anchor': 'middle', dy: '0.35em' });
+      mtext.textContent = '1';
+      marker.appendChild(mtext);
+      svg.appendChild(marker);
+
+      svg.appendChild(el('line', { class: 'arrow', 'marker-end': 'url(#arrowhead)', x1: 70, y1: 90, x2: 250, y2: 560 }));
+
+      const ann = el('g', { class: 'annotation', transform: 'translate(120,420)' });
+      const atext = el('text', { 'text-anchor': 'middle', dy: '0.35em' });
+      atext.textContent = '反手后场';
+      ann.appendChild(atext);
+      svg.appendChild(ann);
+
+      const w = window.COURT.VIEW_W;
+      const h = window.COURT.VIEW_H;
+      const clone = svg.cloneNode(true);
+      clone.setAttribute('xmlns', NS);
+      clone.setAttribute('width', w);
+      clone.setAttribute('height', h);
+
+      const props = ['fill', 'stroke', 'stroke-width', 'stroke-linecap', 'stroke-linejoin',
+        'stroke-dasharray', 'stroke-miterlimit', 'fill-opacity', 'stroke-opacity', 'opacity',
+        'font-size', 'font-family', 'font-weight', 'font-style', 'text-anchor',
+        'dominant-baseline', 'paint-order', 'letter-spacing'];
+      const oNodes = [].slice.call(svg.querySelectorAll('*'));
+      const cNodes = [].slice.call(clone.querySelectorAll('*'));
+      for (let i = 0; i < oNodes.length; i++) {
+        const cs = getComputedStyle(oNodes[i]);
+        let s = '';
+        for (let j = 0; j < props.length; j++) {
+          const p = props[j];
+          const v = cs.getPropertyValue(p);
+          if (v) s += p + ':' + v + ';';
+        }
+        if (s) cNodes[i].setAttribute('style', s);
+      }
+
+      const xml = new XMLSerializer().serializeToString(clone);
+      const blob = new Blob([xml], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const img = new Image();
+      img.onload = function () {
+        const canvas = document.createElement('canvas');
+        canvas.width = w * 2;
+        canvas.height = h * 2;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const data = canvas.toDataURL('image/png');
+        document.getElementById('result').textContent = 'OK pngLen=' + data.length;
+      };
+      img.onerror = function () {
+        document.getElementById('result').textContent = 'IMG_ERROR';
+      };
+      img.src = url;
+    })();
+  </script>
+</body>
+</html>
