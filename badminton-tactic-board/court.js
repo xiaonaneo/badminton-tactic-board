@@ -12,6 +12,7 @@ window.COURT = (function () {
 
   const SCALE = 50;   // 像素 / 米
   const MARGIN = 24;  // 画布四周留白
+  const FLOOR_RADIUS = 12; // 与外层毛玻璃框视觉匹配的圆角半径（SVG 坐标）
 
   const WIDTH_PX = DIM.width * SCALE;   // 横向像素
   const LENGTH_PX = DIM.length * SCALE; // 纵向像素
@@ -37,8 +38,8 @@ window.COURT = (function () {
     return el('line', { x1, y1, x2, y2, class: cls });
   }
 
-  function rect(x, y, w, h, cls) {
-    return el('rect', { x, y, width: w, height: h, class: cls });
+  function rect(x, y, w, h, cls, extra = {}) {
+    return el('rect', { x, y, width: w, height: h, class: cls, ...extra });
   }
 
   function makeDefs() {
@@ -69,7 +70,7 @@ window.COURT = (function () {
     svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
 
     svg.appendChild(makeDefs());
-    svg.appendChild(rect(0, 0, VIEW_W, VIEW_H, 'floor'));
+    svg.appendChild(rect(0, 0, VIEW_W, VIEW_H, 'floor', { rx: FLOOR_RADIUS, ry: FLOOR_RADIUS }));
 
     const court = el('g', { class: 'court' });
 
