@@ -1,9 +1,12 @@
 (function () {
   const NS = 'http://www.w3.org/2000/svg';
   const svg = document.getElementById('court');
+  const board = svg.closest('.board');
+  const eraserCursor = document.getElementById('eraser-cursor');
   const statusEl = document.getElementById('status') || { set textContent(_) {} };
 
   let tool = 'select';
+  let deleteMode = false;
   let items = [];      // { kind, id, el, ... }
   let nextId = 1;
   let selected = null;
@@ -205,6 +208,15 @@
   svg.addEventListener('pointerdown', function (e) {
     const p = clientToSvg(e);
 
+    if (deleteMode) {
+      const target = e.target.closest ? e.target.closest('[data-kind]') : null;
+      if (target) {
+        const item = findItem(target.getAttribute('data-kind'), +target.getAttribute('data-id'));
+        if (item) removeItem(item);
+      }
+      return;
+    }
+
     if (tool === 'arrow') {
       e.preventDefault();
       svg.setPointerCapture(e.pointerId);
@@ -248,6 +260,12 @@
 
   svg.addEventListener('pointermove', function (e) {
     const p = clientToSvg(e);
+    if (deleteMode) {
+      const rect = board.getBoundingClientRect();
+      eraserCursor.style.left = `${e.clientX - rect.left}px`;
+      eraserCursor.style.top = `${e.clientY - rect.top}px`;
+      eraserCursor.classList.add('is-visible');
+    }
     if (drag) {
       const dx = p.x - drag.start.x;
       const dy = p.y - drag.start.y;
@@ -309,6 +327,9 @@
 
   svg.addEventListener('pointerup', endInteraction);
   svg.addEventListener('pointercancel', endInteraction);
+  svg.addEventListener('pointerleave', function () {
+    eraserCursor.classList.remove('is-visible');
+  });
 
   function closeTextInput() {
     if (activeTextInput) {
@@ -366,8 +387,28 @@
   });
 
   // ---------- 工具切换 ----------
+  const deleteButton = document.getElementById('delete');
+  function setDeleteMode(active) {
+    deleteMode = active;
+    deleteButton.setAttribute('aria-pressed', String(active));
+    svg.classList.toggle('tool-delete', active);
+    if (active) {
+      document.querySelectorAll('input[name="tool"]').forEach(function (radio) { radio.checked = false; });
+      svg.classList.remove('tool-arrow', 'tool-brush', 'tool-text');
+      select(null);
+    } else {
+      eraserCursor.classList.remove('is-visible');
+      if (!document.querySelector('input[name="tool"]:checked')) {
+        const selectRadio = document.querySelector('input[name="tool"][value="select"]');
+        selectRadio.checked = true;
+        tool = 'select';
+      }
+    }
+  }
+
   function setTool(t) {
     tool = t;
+    setDeleteMode(false);
     svg.classList.toggle('tool-arrow', t === 'arrow');
     svg.classList.toggle('tool-text', t === 'text');
     svg.classList.toggle('tool-brush', t === 'brush');
@@ -383,8 +424,11 @@
   document.getElementById('add-shuttle').addEventListener('click', function () {
     addMarker({ x: 6.7, y: 3.05 }, 'shuttle');
   });
-  document.getElementById('delete').addEventListener('click', removeSelected);
+  deleteButton.addEventListener('click', function () {
+    setDeleteMode(!deleteMode);
+  });
   document.getElementById('clear').addEventListener('click', function () {
+    if (items.length && !window.confirm('确定清空当前战术吗？此操作不可撤回。')) return;
     items.forEach(function (it) { it.el.remove(); });
     items = [];
     select(null);
@@ -392,6 +436,49 @@
   });
   document.getElementById('undo').addEventListener('click', undo);
   document.getElementById('save').addEventListener('click', saveImage);
+
+  const contactButton = document.getElementById('contact-author');
+  const contactCard = document.getElementById('contact-card');
+  const rewardButton = document.getElementById('reward-author');
+  const rewardCard = document.getElementById('reward-card');
+  const githubButton = document.getElementById('github-repo');
+  const githubCard = document.getElementById('github-card');
+  const authorCards = [
+    { button: contactButton, card: contactCard },
+    { button: rewardButton, card: rewardCard },
+    { button: githubButton, card: githubCard },
+  ];
+  function setAuthorCard(entry, open) {
+    entry.card.hidden = !open;
+    entry.button.setAttribute('aria-expanded', String(open));
+  }
+  function toggleAuthorCard(entry) {
+    const shouldOpen = entry.card.hidden;
+    authorCards.forEach(function (item) { setAuthorCard(item, false); });
+    if (shouldOpen) setAuthorCard(entry, true);
+  }
+  authorCards.forEach(function (entry) {
+    entry.button.addEventListener('click', function (e) {
+      e.stopPropagation();
+      toggleAuthorCard(entry);
+    });
+  });
+  function closeAuthorCards(e) {
+    const clickedAuthorUI = authorCards.some(function (entry) {
+      return entry.button.contains(e.target) || entry.card.contains(e.target);
+    });
+    if (!clickedAuthorUI) {
+      authorCards.forEach(function (entry) { setAuthorCard(entry, false); });
+    }
+  }
+  document.addEventListener('pointerdown', closeAuthorCards, true);
+  document.addEventListener('click', closeAuthorCards);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && authorCards.some(function (entry) { return !entry.card.hidden; })) {
+      authorCards.forEach(function (entry) { setAuthorCard(entry, false); });
+      document.activeElement === rewardButton ? rewardButton.focus() : contactButton.focus();
+    }
+  });
 
   document.querySelectorAll('input[name="tool"]').forEach(function (r) {
     r.addEventListener('change', function () {

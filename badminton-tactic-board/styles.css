@@ -65,6 +65,7 @@ body::before {
 .actions { display: flex; flex: 1; flex-direction: column; gap: 10px; margin-top: 10px; }
 .action-group { display: grid; width: 100%; flex: 0 0 auto; grid-template-columns: 1fr; gap: 4px; justify-items: center; padding: 5px; border-radius: 15px; }
 .action-group.ops { margin-top: 0; }
+.action-group.share { position: relative; }
 
 button { position: relative; display: grid; width: 42px; height: 42px; min-height: 42px; padding: 0; place-items: center; border: 1px solid var(--glass-border); border-radius: 11px; background: rgba(255, 255, 255, 0.055); color: var(--text); font: inherit; cursor: pointer; white-space: nowrap; transition: background 0.18s ease, border-color 0.18s ease, transform 0.05s ease, box-shadow 0.18s ease; }
 button:hover { border-color: var(--glass-border-strong); background: rgba(255, 255, 255, 0.11); box-shadow: 0 5px 16px rgba(0, 0, 0, 0.16); }
@@ -74,8 +75,15 @@ button.primary { border-color: rgba(135, 255, 206, 0.44); background: linear-gra
 button.primary:hover { border-color: rgba(190, 255, 228, 0.7); background: linear-gradient(135deg, #52e8a8, #23b979); }
 .action-group.share button.primary { border-color: transparent; background: transparent; color: var(--green); box-shadow: none; }
 .action-group.share button.primary:hover { border-color: transparent; background: rgba(49, 210, 141, 0.1); box-shadow: none; }
+.action-group.ops button.share-button { border-color: transparent; background: transparent; color: var(--green); box-shadow: none; }
+.action-group.ops button.share-button:hover { border-color: transparent; background: rgba(49, 210, 141, 0.1); box-shadow: none; }
+.action-group.share button.contact-trigger, .action-group.share button.reward-trigger, .action-group.share button.github-trigger { border-color: transparent; background: transparent; color: var(--muted); box-shadow: none; }
+.action-group.share button.contact-trigger:hover, .action-group.share button.contact-trigger[aria-expanded="true"], .action-group.share button.reward-trigger:hover, .action-group.share button.reward-trigger[aria-expanded="true"], .action-group.share button.github-trigger:hover, .action-group.share button.github-trigger[aria-expanded="true"] { border-color: transparent; background: rgba(49, 210, 141, 0.1); color: var(--green); box-shadow: none; }
+.action-group.share button.reward-trigger { color: #ff6472; }
+.action-group.share button.reward-trigger:hover, .action-group.share button.reward-trigger[aria-expanded="true"] { background: rgba(255, 100, 114, 0.1); color: #ff6472; }
 .action-group:not(.share) button { border-color: transparent; background: transparent; box-shadow: none; }
 .action-group:not(.share) button:hover { border-color: var(--glass-border-strong); background: rgba(255, 255, 255, 0.06); box-shadow: none; }
+.action-group.ops button#delete[aria-pressed="true"] { border-color: rgba(255, 226, 122, 0.35); background: rgba(255, 226, 122, 0.12); color: #ffe27a; }
 .chip { display: grid; align-items: center; gap: 7px; }
 .icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
 .swatch { width: 13px; height: 13px; flex: none; border: 1px solid rgba(255, 255, 255, 0.28); border-radius: 50%; box-shadow: 0 0 10px currentColor; }
@@ -86,7 +94,12 @@ button.primary:hover { border-color: rgba(190, 255, 228, 0.7); background: linea
 .board { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; min-width: 0; min-height: 0; padding: 14px; overflow: hidden; border: 1px solid var(--glass-border); border-radius: 20px; background: var(--glass); box-shadow: var(--shadow); -webkit-backdrop-filter: blur(22px) saturate(140%); backdrop-filter: blur(22px) saturate(140%); }
 .board > svg { display: block; width: auto; max-width: 100%; height: calc(100dvh - 44px); min-height: 280px; max-height: none; touch-action: none; user-select: none; -webkit-user-select: none; }
 .board > svg.tool-arrow, .board > svg.tool-brush { cursor: crosshair; }
+.board > svg.tool-delete, .board > svg.tool-delete [data-kind], .board > svg.tool-delete [data-kind] * { cursor: none !important; }
 .board > svg.is-dragging { cursor: grabbing !important; }
+.eraser-cursor { position: absolute; z-index: 5; display: grid; width: 32px; height: 32px; place-items: center; transform: translate(-50%, -50%) rotate(-12deg); color: #ffe27a; opacity: 0; pointer-events: none; transition: opacity 0.12s ease; }
+.eraser-cursor .icon { width: 21px; height: 21px; fill: none; }
+.eraser-cursor.is-visible .icon { fill: currentColor; }
+.eraser-cursor.is-visible { opacity: 1; }
 .board > svg.tool-text { cursor: text; }
 .floor { fill: #0e6945; }
 .line { fill: none; stroke: var(--line); stroke-width: 1.2px; }
@@ -104,7 +117,7 @@ button.primary:hover { border-color: rgba(190, 255, 228, 0.7); background: linea
 .arrow-hit { fill: none; stroke: transparent; stroke-width: 18px; pointer-events: stroke; }
 .arrow-line { fill: none; stroke: #ffe16a; stroke-width: 3.5px; stroke-linecap: butt; pointer-events: none; filter: drop-shadow(0 0 3px rgba(255, 225, 106, 0.45)); }
 .brush-hit { fill: none; stroke: transparent; stroke-width: 18px; pointer-events: stroke; }
-.brush-line { fill: none; stroke: #eafff6; stroke-width: 3px; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+.brush-line { fill: none; stroke: #ff6472; stroke-width: 3px; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
 .brush.selected .brush-line { stroke: #ffe27a; stroke-width: 4px; filter: drop-shadow(0 0 4px rgba(255, 226, 122, 0.7)); }
 .annotation { cursor: grab; }
 .annotation.dragging { cursor: grabbing; }
@@ -112,6 +125,20 @@ button.primary:hover { border-color: rgba(190, 255, 228, 0.7); background: linea
 
 .text-input { position: fixed; z-index: 100; width: 180px; padding: 9px 11px; border: 1px solid var(--glass-border-strong); border-radius: 10px; outline: none; background: var(--glass-strong); color: var(--text); font-size: 16px; box-shadow: var(--shadow); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
 .text-input::placeholder { color: var(--muted); }
+.contact-card { position: absolute; left: calc(100% + 12px); bottom: 0; z-index: 50; display: grid; gap: 2px; width: 210px; padding: 10px 12px; border: 1px solid var(--glass-border-strong); border-radius: 11px; background: var(--glass-strong); box-shadow: var(--shadow); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
+.contact-card[hidden] { display: none; }
+.contact-card-title { color: var(--muted); font-size: 12px; }
+.contact-card a { color: var(--text); font-size: 13px; overflow-wrap: anywhere; text-decoration: none; }
+.contact-card a:hover { color: var(--green); text-decoration: underline; }
+.reward-card { position: absolute; left: calc(100% + 12px); bottom: 0; z-index: 50; display: grid; justify-items: center; gap: 8px; width: 224px; padding: 12px; border: 1px solid var(--glass-border-strong); border-radius: 11px; background: var(--glass-strong); box-shadow: var(--shadow); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
+.reward-card[hidden] { display: none; }
+.reward-card-title { color: var(--text); font-size: 13px; }
+.reward-card img { display: block; width: 100%; border-radius: 7px; background: #fff; }
+.github-card { position: absolute; left: calc(100% + 12px); bottom: 0; z-index: 50; display: grid; gap: 2px; width: 250px; padding: 10px 12px; border: 1px solid var(--glass-border-strong); border-radius: 11px; background: var(--glass-strong); box-shadow: var(--shadow); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
+.github-card[hidden] { display: none; }
+.github-card-title { color: var(--muted); font-size: 12px; }
+.github-card a { color: var(--text); font-size: 13px; overflow-wrap: anywhere; text-decoration: none; }
+.github-card a:hover { color: var(--green); text-decoration: underline; }
 .toast { position: fixed; bottom: 40px; left: 50%; z-index: 200; padding: 10px 20px; transform: translateX(-50%); border: 1px solid var(--glass-border-strong); border-radius: 999px; background: rgba(10, 28, 24, 0.82); color: #fff; font-size: 14px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; white-space: nowrap; -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
 .toast.show { opacity: 1; }
 

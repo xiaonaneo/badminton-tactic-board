@@ -32,7 +32,7 @@
       <div class="seg" role="radiogroup" aria-label="工具">
         <label class="seg-item">
           <input type="radio" name="tool" value="select" checked />
-          <span class="control-icon" data-tooltip="移动"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M2 12h20"/><path d="m12 2-3 3M12 2l3 3M12 22l-3-3M12 22l3-3M2 12l3-3M2 12l3 3M22 12l-3-3M22 12l-3 3"/><circle cx="12" cy="12" r="2"/></svg></span>
+          <span class="control-icon" data-tooltip="移动"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4 20 12 15 15 11 21 4 4Z"/></svg></span>
         </label>
         <label class="seg-item">
           <input type="radio" name="tool" value="arrow" />
@@ -52,15 +52,30 @@
         <div class="action-group adds">
           <button class="chip" id="add-red" data-tooltip="红方" aria-label="添加红方"><span class="swatch red"></span></button>
           <button class="chip" id="add-blue" data-tooltip="蓝方" aria-label="添加蓝方"><span class="swatch blue"></span></button>
-          <button class="chip" id="add-shuttle" data-tooltip="球" aria-label="添加羽毛球"><span class="swatch shuttle"></span></button>
+          <button class="chip" id="add-shuttle" data-tooltip="一颗好球" aria-label="添加一颗好球"><span class="swatch shuttle"></span></button>
         </div>
         <div class="action-group ops">
           <button class="ghost" id="undo" data-tooltip="撤回" aria-label="撤回"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7 4 12l5 5"/><path d="M4 12h10a6 6 0 0 1 6 6"/></svg></button>
-          <button class="ghost" id="delete" data-tooltip="删除" aria-label="删除选中"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m4 16 9-9a2.1 2.1 0 0 1 3 0l2 2a2.1 2.1 0 0 1 0 3l-8 8H5l-2-2a2.1 2.1 0 0 1 1-2Z"/><path d="m9 20 8-8"/></svg></button>
+          <button class="ghost" id="delete" data-tooltip="擦除" aria-label="擦除" aria-pressed="false"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m4 16 9-9a2.1 2.1 0 0 1 3 0l2 2a2.1 2.1 0 0 1 0 3l-8 8H5l-2-2a2.1 2.1 0 0 1 1-2Z"/><path d="m9 20 8-8"/></svg></button>
           <button class="ghost" id="clear" data-tooltip="清空" aria-label="清空"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l-1 14H7L6 7Z"/><path d="M9 7V4h6v3M4 7h16M10 11v6M14 11v6"/></svg></button>
+          <button class="primary share-button" id="save" data-tooltip="分享战术" aria-label="分享战术"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 18-8-8 18-2.5-7.5L3 11Z"/><path d="m10.5 13.5 5-5"/></svg></button>
         </div>
         <div class="action-group share">
-          <button class="primary" id="save" data-tooltip="分享战术" aria-label="分享战术"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 18-8-8 18-2.5-7.5L3 11Z"/><path d="m10.5 13.5 5-5"/></svg></button>
+          <button class="github-trigger" id="github-repo" data-tooltip="GitHub" aria-label="GitHub 仓库" aria-expanded="false" aria-controls="github-card"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="none" d="M12 .7a11.3 11.3 0 0 0-3.57 22.02c.57.1.78-.25.78-.55v-2.17c-3.17.69-3.84-1.53-3.84-1.53-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.25 3.33.96.1-.74.4-1.25.73-1.54-2.53-.29-5.19-1.27-5.19-5.65 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.03 0 0 .96-.31 3.12 1.17a10.86 10.86 0 0 1 5.68 0c2.16-1.48 3.12-1.17 3.12-1.17.62 1.58.23 2.74.11 3.03.73.8 1.18 1.82 1.18 3.07 0 4.39-2.67 5.35-5.21 5.63.41.35.78 1.04.78 2.1v3.11c0 .3.2.66.79.55A11.3 11.3 0 0 0 12 .7Z"/></svg></button>
+          <button class="contact-trigger" id="contact-author" data-tooltip="联系作者" aria-label="联系作者" aria-expanded="false" aria-controls="contact-card"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg></button>
+          <button class="reward-trigger" id="reward-author" data-tooltip="打赏作者" aria-label="打赏作者" aria-expanded="false" aria-controls="reward-card"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 8.8c0 5.1-8.8 10-8.8 10s-8.8-4.9-8.8-10A4.6 4.6 0 0 1 12 6.2a4.6 4.6 0 0 1 8.8 2.6Z"/></svg></button>
+          <div class="contact-card" id="contact-card" role="dialog" aria-label="联系作者" hidden>
+            <span class="contact-card-title">联系作者</span>
+            <a href="mailto:neo111282@126.com">neo111282@126.com</a>
+          </div>
+          <div class="reward-card" id="reward-card" role="dialog" aria-label="打赏作者" hidden>
+            <span class="reward-card-title">感谢你的支持</span>
+            <img src="assets/reward-qr.jpg" alt="作者收款二维码" />
+          </div>
+          <div class="github-card" id="github-card" role="dialog" aria-label="GitHub 仓库" hidden>
+            <span class="github-card-title">GitHub 仓库</span>
+            <a href="https://github.com/xiaonaneo/badminton-tactic-board" target="_blank" rel="noreferrer noopener">github.com/xiaonaneo/badminton-tactic-board</a>
+          </div>
         </div>
       </div>
       </div>
@@ -68,6 +83,7 @@
 
     <div class="board">
       <svg id="court" aria-label="羽毛球场地"></svg>
+      <div class="eraser-cursor" id="eraser-cursor" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="m4 16 9-9a2.1 2.1 0 0 1 3 0l2 2a2.1 2.1 0 0 1 0 3l-8 8H5l-2-2a2.1 2.1 0 0 1 1-2Z"/><path d="m9 20 8-8"/></svg></div>
     </div>
 
     <div class="toast" id="toast" hidden></div>
