@@ -9,6 +9,8 @@ const js = fs.readFileSync(path.join(__dirname, '..', 'app.js'), 'utf8');
 assert.match(html, /<div class="action-group adds">[\s\S]*id="add-red"[\s\S]*id="add-blue"[\s\S]*id="add-shuttle"[\s\S]*<\/div>/);
 assert.match(html, /<div class="action-group ops">[\s\S]*id="undo"[\s\S]*id="delete"[\s\S]*id="clear"[\s\S]*id="save"[\s\S]*<\/div>/);
 assert.match(html, /<div class="action-group share">[\s\S]*id="github-repo"[\s\S]*id="contact-author"[\s\S]*id="reward-author"[\s\S]*id="contact-card"[\s\S]*id="reward-card"[\s\S]*id="github-card"[\s\S]*<\/div>/);
+assert.match(css, /\.toolbar\s*\{[^}]*justify-content:\s*space-evenly;/is);
+assert.match(css, /\.actions\s*\{[^}]*display:\s*contents;/is);
 assert.match(css, /\.seg,\s*\.action-group,\s*\.board\s*\{[^}]*border:/is);
 assert.match(css, /\.action-group:not\(\.share\) button\s*\{[^}]*background:\s*transparent;/is);
 assert.match(css, /\.action-group\.share button\.primary\s*\{[^}]*background:\s*transparent;[^}]*color:\s*var\(--green\);/is);

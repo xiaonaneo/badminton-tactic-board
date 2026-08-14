@@ -43,8 +43,8 @@ body::before {
 }
 
 .app { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 16px; width: 100%; min-height: 100dvh; margin: 0; padding: 16px; }
-.sidebar { position: relative; z-index: 10; align-self: start; display: flex; flex-direction: column; min-width: 0; padding: 12px 8px; border: 1px solid var(--glass-border); border-radius: 20px; background: var(--glass); box-shadow: var(--shadow); -webkit-backdrop-filter: blur(22px) saturate(140%); backdrop-filter: blur(22px) saturate(140%); }
-.toolbar { display: flex; flex: 1; flex-direction: column; min-height: 0; }
+.sidebar { position: relative; z-index: 10; align-self: stretch; display: flex; flex-direction: column; min-width: 0; padding: 12px 8px; border: 1px solid var(--glass-border); border-radius: 20px; background: var(--glass); box-shadow: var(--shadow); -webkit-backdrop-filter: blur(22px) saturate(140%); backdrop-filter: blur(22px) saturate(140%); }
+.toolbar { display: flex; flex: 1; flex-direction: column; justify-content: space-evenly; min-height: 0; }
 
 .seg, .action-group, .board {
   border: 1px solid var(--glass-border);
@@ -62,7 +62,7 @@ body::before {
 .seg-item input:checked + .control-icon { border-color: transparent; background: rgba(88, 221, 166, 0.16); color: #eafff5; box-shadow: none; }
 .seg-item input:focus-visible + .control-icon { outline: 2px solid var(--green); outline-offset: 1px; }
 
-.actions { display: flex; flex: 1; flex-direction: column; gap: 10px; margin-top: 10px; }
+.actions { display: contents; }
 .action-group { display: grid; width: 100%; flex: 0 0 auto; grid-template-columns: 1fr; gap: 4px; justify-items: center; padding: 5px; border-radius: 15px; }
 .action-group.ops { margin-top: 0; }
 .action-group.share { position: relative; }
@@ -157,7 +157,6 @@ button:hover, button.primary:hover, .action-group.ops button#delete[aria-pressed
   .sidebar { padding: 10px 5px; border-radius: 15px; }
   .seg { gap: 3px; padding: 4px; }
   .seg-item .control-icon { width: 38px; height: 38px; }
-  .actions { gap: 7px; margin-top: 7px; }
   .action-group { gap: 3px; padding: 4px; }
   button { width: 38px; height: 38px; min-height: 38px; }
   .board { padding: 8px; border-radius: 15px; }
