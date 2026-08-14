@@ -59,7 +59,7 @@ body::before {
 .seg-item input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
 .seg-item .control-icon { position: relative; display: grid; width: 42px; height: 42px; margin: 0 auto; place-items: center; border: 1px solid transparent; border-radius: 11px; color: var(--muted); transition: 0.18s ease; }
 .seg-item:hover .control-icon { color: var(--text); background: rgba(255, 255, 255, 0.06); }
-.seg-item input:checked + .control-icon { border-color: rgba(141, 255, 207, 0.28); background: rgba(88, 221, 166, 0.16); color: #eafff5; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 18px rgba(18, 172, 112, 0.16); }
+.seg-item input:checked + .control-icon { border-color: transparent; background: rgba(88, 221, 166, 0.16); color: #eafff5; box-shadow: none; }
 .seg-item input:focus-visible + .control-icon { outline: 2px solid var(--green); outline-offset: 1px; }
 
 .actions { display: flex; flex: 1; flex-direction: column; gap: 10px; margin-top: 10px; }
@@ -68,11 +68,11 @@ body::before {
 .action-group.share { position: relative; }
 
 button { position: relative; display: grid; width: 42px; height: 42px; min-height: 42px; padding: 0; place-items: center; border: 1px solid var(--glass-border); border-radius: 11px; background: rgba(255, 255, 255, 0.055); color: var(--text); font: inherit; cursor: pointer; white-space: nowrap; transition: background 0.18s ease, border-color 0.18s ease, transform 0.05s ease, box-shadow 0.18s ease; }
-button:hover { border-color: var(--glass-border-strong); background: rgba(255, 255, 255, 0.11); box-shadow: 0 5px 16px rgba(0, 0, 0, 0.16); }
+button:hover { border-color: var(--glass-border-strong); background: rgba(255, 255, 255, 0.11); box-shadow: none; }
 button:active { transform: translateY(1px); }
 button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
-button.primary { border-color: rgba(135, 255, 206, 0.44); background: linear-gradient(135deg, #35d995, #1aa66b); color: #062218; font-weight: 700; box-shadow: 0 8px 22px rgba(31, 200, 130, 0.2); }
-button.primary:hover { border-color: rgba(190, 255, 228, 0.7); background: linear-gradient(135deg, #52e8a8, #23b979); }
+button.primary { border-color: rgba(135, 255, 206, 0.44); background: linear-gradient(135deg, #35d995, #1aa66b); color: #062218; font-weight: 700; box-shadow: none; }
+button.primary:hover { border-color: transparent; background: linear-gradient(135deg, #52e8a8, #23b979); }
 .action-group.share button.primary { border-color: transparent; background: transparent; color: var(--green); box-shadow: none; }
 .action-group.share button.primary:hover { border-color: transparent; background: rgba(49, 210, 141, 0.1); box-shadow: none; }
 .action-group.ops button.share-button { border-color: transparent; background: transparent; color: var(--green); box-shadow: none; }
@@ -82,8 +82,10 @@ button.primary:hover { border-color: rgba(190, 255, 228, 0.7); background: linea
 .action-group.share button.reward-trigger { color: #ff6472; }
 .action-group.share button.reward-trigger:hover, .action-group.share button.reward-trigger[aria-expanded="true"] { background: rgba(255, 100, 114, 0.1); color: #ff6472; }
 .action-group:not(.share) button { border-color: transparent; background: transparent; box-shadow: none; }
-.action-group:not(.share) button:hover { border-color: var(--glass-border-strong); background: rgba(255, 255, 255, 0.06); box-shadow: none; }
-.action-group.ops button#delete[aria-pressed="true"] { border-color: rgba(255, 226, 122, 0.35); background: rgba(255, 226, 122, 0.12); color: #ffe27a; }
+.action-group:not(.share) button:hover { border-color: transparent; background: rgba(255, 255, 255, 0.06); box-shadow: none; }
+.action-group.ops button#delete[aria-pressed="true"] { border-color: transparent; background: rgba(180, 124, 255, 0.16); color: #b47cff; }
+button:hover, button.primary:hover, .action-group.ops button#delete[aria-pressed="true"]:hover { border-color: transparent; }
+.seg-item:hover input:checked + .control-icon { border-color: transparent; }
 .chip { display: grid; align-items: center; gap: 7px; }
 .icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
 .swatch { width: 13px; height: 13px; flex: none; border: 1px solid rgba(255, 255, 255, 0.28); border-radius: 50%; box-shadow: 0 0 10px currentColor; }
@@ -96,7 +98,7 @@ button.primary:hover { border-color: rgba(190, 255, 228, 0.7); background: linea
 .board > svg.tool-arrow, .board > svg.tool-brush { cursor: crosshair; }
 .board > svg.tool-delete, .board > svg.tool-delete [data-kind], .board > svg.tool-delete [data-kind] * { cursor: none !important; }
 .board > svg.is-dragging { cursor: grabbing !important; }
-.eraser-cursor { position: absolute; z-index: 5; display: grid; width: 32px; height: 32px; place-items: center; transform: translate(-50%, -50%) rotate(-12deg); color: #ffe27a; opacity: 0; pointer-events: none; transition: opacity 0.12s ease; }
+.eraser-cursor { position: absolute; z-index: 5; display: grid; width: 32px; height: 32px; place-items: center; transform: translate(-50%, -50%) rotate(-12deg); color: #b47cff; opacity: 0; pointer-events: none; transition: opacity 0.12s ease; }
 .eraser-cursor .icon { width: 21px; height: 21px; fill: none; }
 .eraser-cursor.is-visible .icon { fill: currentColor; }
 .eraser-cursor.is-visible { opacity: 1; }
@@ -111,14 +113,15 @@ button.primary:hover { border-color: rgba(190, 255, 228, 0.7); background: linea
 .dot.blue { fill: #4d9cf7; }
 .dot.shuttle { fill: #f4fffb; }
 .marker .label { fill: #fff; font-size: 12px; pointer-events: none; }
-.marker.selected .dot { stroke: #ffe27a; stroke-width: 3px; filter: drop-shadow(0 0 5px rgba(255, 226, 122, 0.8)); }
+.marker.selected .dot { stroke: #fff; stroke-width: 3px; filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.85)); }
 .arrow { cursor: grab; }
 .arrow.dragging { cursor: grabbing; }
 .arrow-hit { fill: none; stroke: transparent; stroke-width: 18px; pointer-events: stroke; }
 .arrow-line { fill: none; stroke: #ffe16a; stroke-width: 3.5px; stroke-linecap: butt; pointer-events: none; filter: drop-shadow(0 0 3px rgba(255, 225, 106, 0.45)); }
+.arrow.selected .arrow-line { stroke: #ffe16a; stroke-width: 3.5px; filter: drop-shadow(0 0 6px rgba(255, 225, 106, 0.8)); }
 .brush-hit { fill: none; stroke: transparent; stroke-width: 18px; pointer-events: stroke; }
 .brush-line { fill: none; stroke: #ff6472; stroke-width: 3px; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
-.brush.selected .brush-line { stroke: #ffe27a; stroke-width: 4px; filter: drop-shadow(0 0 4px rgba(255, 226, 122, 0.7)); }
+.brush.selected .brush-line { stroke: #ff6472; stroke-width: 3px; filter: drop-shadow(0 0 5px rgba(255, 100, 114, 0.75)); }
 .annotation { cursor: grab; }
 .annotation.dragging { cursor: grabbing; }
 .annotation text { fill: #fff; font-size: 22px; font-weight: 600; }
