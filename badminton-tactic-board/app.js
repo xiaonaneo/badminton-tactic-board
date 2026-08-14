@@ -198,6 +198,7 @@
       };
     }
     item.el.classList.add('dragging');
+    svg.classList.add('is-dragging');
     select(item);
   }
 
@@ -278,6 +279,7 @@
   function endInteraction(e) {
     if (drag) {
       drag.item.el.classList.remove('dragging');
+      svg.classList.remove('is-dragging');
       drag = null;
       scheduleCache();
       return;

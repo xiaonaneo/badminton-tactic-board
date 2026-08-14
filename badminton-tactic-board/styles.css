@@ -86,6 +86,7 @@ button.primary:hover { border-color: rgba(190, 255, 228, 0.7); background: linea
 .board { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; min-width: 0; min-height: 0; padding: 14px; overflow: hidden; border: 1px solid var(--glass-border); border-radius: 20px; background: var(--glass); box-shadow: var(--shadow); -webkit-backdrop-filter: blur(22px) saturate(140%); backdrop-filter: blur(22px) saturate(140%); }
 .board > svg { display: block; width: auto; max-width: 100%; height: calc(100dvh - 44px); min-height: 280px; max-height: none; touch-action: none; user-select: none; -webkit-user-select: none; }
 .board > svg.tool-arrow, .board > svg.tool-brush { cursor: crosshair; }
+.board > svg.is-dragging { cursor: grabbing !important; }
 .board > svg.tool-text { cursor: text; }
 .floor { fill: #0e6945; }
 .line { fill: none; stroke: var(--line); stroke-width: 1.2px; }
