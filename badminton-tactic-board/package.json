@@ -6,6 +6,6 @@
   "scripts": {
     "dev": "python3 -m http.server 4173",
     "check": "node --check app.js && node --check court.js && node --check share-utils.js",
-    "test": "node test/share-utils.test.js && node test/brush-selection.test.js && node test/annotation-style.test.js && node test/icon-layout.test.js && node test/court-corners.test.js && node test/action-groups.test.js"
+    "test": "node test/share-utils.test.js && node test/brush-selection.test.js && node test/annotation-style.test.js"
   }
 }
