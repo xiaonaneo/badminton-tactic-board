@@ -1,0 +1,11 @@
+{
+  "name": "badminton-tactic-board",
+  "private": true,
+  "version": "0.1.0",
+  "description": "纯前端羽毛球战术板",
+  "scripts": {
+    "dev": "python3 -m http.server 4173",
+    "check": "node --check app.js && node --check court.js && node --check share-utils.js",
+    "test": "node test/share-utils.test.js && node test/brush-selection.test.js && node test/annotation-style.test.js"
+  }
+}

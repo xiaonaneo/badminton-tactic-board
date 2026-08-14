@@ -1,0 +1,15 @@
+{
+  "name": "羽毛球战术板",
+  "short_name": "战术板",
+  "description": "羽毛球战术板：拖拽球员、画箭头、加标注、导出图片。",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f5f6f8",
+  "theme_color": "#0c8a4f",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon-180.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

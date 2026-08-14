@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0c8a4f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="羽毛球战术板" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icon-180.png" />
+  <title>羽毛球战术板</title>
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="羽毛球战术板" />
+  <meta property="og:title" content="羽毛球战术板" />
+  <meta property="og:description" content="守住直线！" />
+  <meta property="og:url" content="https://badminton-tactic-board.netlify.app/" />
+  <meta property="og:image" content="https://badminton-tactic-board.netlify.app/og-image.png" />
+  <meta property="og:image:width" content="1000" />
+  <meta property="og:image:height" content="1000" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="羽毛球战术板" />
+  <meta name="twitter:description" content="守住直线！" />
+  <meta name="twitter:image" content="https://badminton-tactic-board.netlify.app/og-image.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <header class="header">
+        <h1>羽毛球战术板</h1>
+      </header>
+
+      <div class="toolbar">
+      <div class="seg" role="radiogroup" aria-label="工具">
+        <label class="seg-item">
+          <input type="radio" name="tool" value="select" checked />
+          <span>移动</span>
+        </label>
+        <label class="seg-item">
+          <input type="radio" name="tool" value="arrow" />
+          <span>箭头</span>
+        </label>
+        <label class="seg-item">
+          <input type="radio" name="tool" value="brush" />
+          <span>画笔</span>
+        </label>
+        <label class="seg-item">
+          <input type="radio" name="tool" value="text" />
+          <span>标注</span>
+        </label>
+      </div>
+
+      <div class="actions">
+        <div class="adds">
+          <button class="chip" id="add-red"><span class="swatch red"></span>红方</button>
+          <button class="chip" id="add-blue"><span class="swatch blue"></span>蓝方</button>
+          <button class="chip" id="add-shuttle"><span class="swatch shuttle"></span>球</button>
+        </div>
+        <div class="ops">
+          <button class="ghost" id="undo">撤回</button>
+          <button class="ghost" id="delete">删除</button>
+          <button class="ghost" id="clear">清空</button>
+          <button class="primary" id="save">保存战术</button>
+        </div>
+      </div>
+      </div>
+    </aside>
+
+    <div class="board">
+      <svg id="court" aria-label="羽毛球场地"></svg>
+    </div>
+
+    <div class="toast" id="toast" hidden></div>
+  </div>
+
+  <script src="court.js"></script>
+  <script src="share-utils.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
