@@ -162,6 +162,12 @@ button:hover, button.primary:hover, .action-group.ops button#delete[aria-pressed
   .seg { gap: 3px; padding: 4px; }
   .seg-item .control-icon { width: 38px; height: 38px; }
   .action-group { gap: 3px; padding: 4px; }
+  [data-tooltip].mobile-tooltip-visible::after {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+  #github-repo::after,
+  #contact-author::after { display: none; }
   button { width: 38px; height: 38px; min-height: 38px; }
   .board { padding: 8px; border-radius: 15px; }
   .board > svg { height: auto; min-height: 0; }

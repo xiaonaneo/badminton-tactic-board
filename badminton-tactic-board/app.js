@@ -139,6 +139,34 @@
     scheduleCache();
   }
 
+  function markerOverlaps(m) {
+    return items.some(function (it) {
+      return it.kind === 'marker' && Math.hypot(it.m.x - m.x, it.m.y - m.y) < 0.8;
+    });
+  }
+
+  function nextMarkerPosition(team) {
+    const anchors = team === 'red'
+      ? [
+        { x: 2.0, y: 1.6 }, { x: 2.0, y: 3.1 }, { x: 3.5, y: 1.6 },
+        { x: 3.5, y: 3.1 }, { x: 5.0, y: 1.6 }, { x: 5.0, y: 3.1 },
+      ]
+      : [
+        { x: 11.4, y: 4.5 }, { x: 11.4, y: 3.0 }, { x: 9.9, y: 4.5 },
+        { x: 9.9, y: 3.0 }, { x: 8.4, y: 4.5 }, { x: 8.4, y: 3.0 },
+      ];
+    const candidate = anchors.find(function (m) { return !markerOverlaps(m); });
+    if (candidate) return candidate;
+
+    for (let x = 1.0; x <= 12.4; x += 1.2) {
+      for (let y = 0.8; y <= 5.3; y += 1.2) {
+        const fallback = { x: x, y: y };
+        if (!markerOverlaps(fallback)) return fallback;
+      }
+    }
+    return team === 'red' ? { x: 2.0, y: 1.6 } : { x: 11.4, y: 4.5 };
+  }
+
   function snapshot() {
     return {
       version: 1,
@@ -174,7 +202,8 @@
 
   function addMarker(m, team) {
     const g = el('g', { class: 'marker' });
-    g.appendChild(el('circle', { r: 13, class: 'dot ' + team }));
+    const radius = team === 'shuttle' ? 11 : 15;
+    g.appendChild(el('circle', { r: radius, class: 'dot ' + team }));
     const text = el('text', { class: 'label', 'text-anchor': 'middle', dy: '0.35em' });
     g.appendChild(text);
     addItem({ kind: 'marker', id: nextId++, el: g, team: team, m: { x: m.x, y: m.y } });
@@ -445,10 +474,10 @@
 
   // ---------- 控件 ----------
   document.getElementById('add-red').addEventListener('click', function () {
-    addMarker({ x: 1.5, y: 2.0 }, 'red');
+    addMarker(nextMarkerPosition('red'), 'red');
   });
   document.getElementById('add-blue').addEventListener('click', function () {
-    addMarker({ x: 11.9, y: 4.1 }, 'blue');
+    addMarker(nextMarkerPosition('blue'), 'blue');
   });
   document.getElementById('add-shuttle').addEventListener('click', function () {
     addMarker({ x: 6.7, y: 3.05 }, 'shuttle');
@@ -460,11 +489,30 @@
     if (items.length && !window.confirm('确定清空当前战术吗？此操作不可撤回。')) return;
     items.forEach(function (it) { it.el.remove(); });
     items = [];
+    nextId = 1;
     select(null);
     scheduleCache();
   });
   document.getElementById('undo').addEventListener('click', undo);
   document.getElementById('save').addEventListener('click', saveImage);
+
+  let mobileTooltipTimer = null;
+  const mobileTooltipControls = Array.prototype.filter.call(
+    document.querySelectorAll('[data-tooltip]'),
+    function (control) { return control.id !== 'github-repo' && control.id !== 'contact-author'; }
+  );
+  mobileTooltipControls.forEach(function (control) {
+    control.addEventListener('click', function () {
+      if (!window.matchMedia('(max-width: 560px)').matches) return;
+      mobileTooltipControls.forEach(function (item) {
+        item.classList.toggle('mobile-tooltip-visible', item === control);
+      });
+      if (mobileTooltipTimer) clearTimeout(mobileTooltipTimer);
+      mobileTooltipTimer = setTimeout(function () {
+        control.classList.remove('mobile-tooltip-visible');
+      }, 1800);
+    });
+  });
 
   const contactButton = document.getElementById('contact-author');
   const contactCard = document.getElementById('contact-card');
