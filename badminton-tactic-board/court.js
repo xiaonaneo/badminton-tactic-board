@@ -5,6 +5,7 @@ window.COURT = (function () {
   const DIM = {
     length: 13.40,             // 全场长
     width: 6.10,               // 场地宽（双打）
+    singlesWidth: 5.18,        // 场地宽（单打）
     shortService: 1.98,        // 前发球线到网的距离
     doublesLongService: 0.76,  // 双打后发球线到端线的距离
     netHeight: 1.55,           // 网高（支柱处 1.55m，中央 1.524m）
@@ -83,6 +84,9 @@ window.COURT = (function () {
     const shortBottom = px(DIM.length / 2 + DIM.shortService);
     const longTop = px(DIM.doublesLongService);
     const longBottom = px(DIM.length - DIM.doublesLongService);
+    const singlesInset = (DIM.width - DIM.singlesWidth) / 2;
+    const singlesLeft = px(singlesInset);
+    const singlesRight = px(DIM.width - singlesInset);
     const centreX = px(DIM.width / 2);
 
     // 外边界（矩形 = 上下端线 + 左右边线）
@@ -98,6 +102,10 @@ window.COURT = (function () {
     // 双打后发球线
     court.appendChild(line(left, longTop, right, longTop, 'line'));
     court.appendChild(line(left, longBottom, right, longBottom, 'line'));
+
+    // 单打边线（位于双打边线内侧，各内缩 0.46m）
+    court.appendChild(line(singlesLeft, top, singlesLeft, bottom, 'line'));
+    court.appendChild(line(singlesRight, top, singlesRight, bottom, 'line'));
 
     // 中线（各自从前发球线到端线）
     court.appendChild(line(centreX, top, centreX, shortTop, 'line'));
