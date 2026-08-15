@@ -42,9 +42,9 @@ body::before {
   mix-blend-mode: soft-light;
 }
 
-.app { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 16px; width: 100%; min-height: 100dvh; margin: 0; padding: 16px; }
-.sidebar { position: relative; z-index: 10; align-self: stretch; display: flex; flex-direction: column; min-width: 0; padding: 12px 8px; border: 1px solid var(--glass-border); border-radius: 20px; background: var(--glass); box-shadow: var(--shadow); -webkit-backdrop-filter: blur(22px) saturate(140%); backdrop-filter: blur(22px) saturate(140%); }
-.toolbar { display: flex; flex: 1; flex-direction: column; justify-content: space-evenly; min-height: 0; }
+.app { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 16px; width: 100%; height: 100vh; height: 100dvh; min-height: 0; margin: 0; padding: 16px; overflow: hidden; }
+.sidebar { position: relative; z-index: 10; align-self: stretch; display: flex; flex-direction: column; min-width: 0; padding: 0 8px; border: 0; border-radius: 0; background: transparent; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.toolbar { display: flex; flex: 1; flex-direction: column; justify-content: space-between; min-height: 0; padding: 14px 0; }
 
 .seg, .action-group, .board {
   border: 1px solid var(--glass-border);
@@ -77,10 +77,8 @@ button.primary:hover { border-color: transparent; background: linear-gradient(13
 .action-group.share button.primary:hover { border-color: transparent; background: rgba(49, 210, 141, 0.1); box-shadow: none; }
 .action-group.ops button.share-button { border-color: transparent; background: transparent; color: var(--green); box-shadow: none; }
 .action-group.ops button.share-button:hover { border-color: transparent; background: rgba(49, 210, 141, 0.1); box-shadow: none; }
-.action-group.share button.contact-trigger, .action-group.share button.reward-trigger, .action-group.share button.github-trigger { border-color: transparent; background: transparent; color: var(--muted); box-shadow: none; }
-.action-group.share button.contact-trigger:hover, .action-group.share button.contact-trigger[aria-expanded="true"], .action-group.share button.reward-trigger:hover, .action-group.share button.reward-trigger[aria-expanded="true"], .action-group.share button.github-trigger:hover, .action-group.share button.github-trigger[aria-expanded="true"] { border-color: transparent; background: rgba(49, 210, 141, 0.1); color: var(--green); box-shadow: none; }
-.action-group.share button.reward-trigger { color: #ff6472; }
-.action-group.share button.reward-trigger:hover, .action-group.share button.reward-trigger[aria-expanded="true"] { background: rgba(255, 100, 114, 0.1); color: #ff6472; }
+.action-group.share button.contact-trigger, .action-group.share button.github-trigger { border-color: transparent; background: transparent; color: var(--muted); box-shadow: none; }
+.action-group.share button.contact-trigger:hover, .action-group.share button.contact-trigger[aria-expanded="true"], .action-group.share button.github-trigger:hover, .action-group.share button.github-trigger[aria-expanded="true"] { border-color: transparent; background: rgba(49, 210, 141, 0.1); color: var(--green); box-shadow: none; }
 .action-group:not(.share) button { border-color: transparent; background: transparent; box-shadow: none; }
 .action-group:not(.share) button:hover { border-color: transparent; background: rgba(255, 255, 255, 0.06); box-shadow: none; }
 .action-group.ops button#delete[aria-pressed="true"] { border-color: transparent; background: rgba(180, 124, 255, 0.16); color: #b47cff; }
@@ -93,8 +91,8 @@ button:hover, button.primary:hover, .action-group.ops button#delete[aria-pressed
 .swatch.blue { background: #62a8ff; color: rgba(98, 168, 255, 0.5); }
 .swatch.shuttle { border-color: rgba(255, 255, 255, 0.6); background: #f5fffb; color: rgba(255, 255, 255, 0.5); }
 
-.board { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; min-width: 0; min-height: 0; padding: 14px; overflow: hidden; border: 1px solid var(--glass-border); border-radius: 20px; background: var(--glass); box-shadow: var(--shadow); -webkit-backdrop-filter: blur(22px) saturate(140%); backdrop-filter: blur(22px) saturate(140%); }
-.board > svg { display: block; width: auto; max-width: 100%; height: calc(100dvh - 44px); min-height: 280px; max-height: none; touch-action: none; user-select: none; -webkit-user-select: none; }
+.board { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; min-width: 0; min-height: 0; padding: 14px; overflow: hidden; border: 0; border-radius: 0; background: transparent; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.board > svg { display: block; width: 100%; max-width: 100%; height: auto; min-height: 0; max-height: 100%; touch-action: none; user-select: none; -webkit-user-select: none; }
 .board > svg.tool-arrow, .board > svg.tool-brush { cursor: crosshair; }
 .board > svg.tool-delete, .board > svg.tool-delete [data-kind], .board > svg.tool-delete [data-kind] * { cursor: none !important; }
 .board > svg.is-dragging { cursor: grabbing !important; }
@@ -128,15 +126,11 @@ button:hover, button.primary:hover, .action-group.ops button#delete[aria-pressed
 
 .text-input { position: fixed; z-index: 100; width: 180px; padding: 9px 11px; border: 1px solid var(--glass-border-strong); border-radius: 10px; outline: none; background: var(--glass-strong); color: var(--text); font-size: 16px; box-shadow: var(--shadow); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
 .text-input::placeholder { color: var(--muted); }
-.contact-card { position: absolute; left: calc(100% + 12px); bottom: 0; z-index: 50; display: grid; gap: 2px; width: 210px; padding: 10px 12px; border: 1px solid var(--glass-border-strong); border-radius: 11px; background: var(--glass-strong); box-shadow: var(--shadow); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
+.contact-card { position: absolute; left: calc(100% + 12px); bottom: 0; z-index: 50; display: grid; gap: 2px; width: max-content; max-width: min(250px, calc(100vw - 24px)); padding: 10px 12px; border: 1px solid var(--glass-border-strong); border-radius: 11px; background: var(--glass-strong); box-shadow: var(--shadow); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
 .contact-card[hidden] { display: none; }
 .contact-card-title { color: var(--muted); font-size: 12px; }
-.contact-card a { color: var(--text); font-size: 13px; overflow-wrap: anywhere; text-decoration: none; }
-.contact-card a:hover { color: var(--green); text-decoration: underline; }
-.reward-card { position: absolute; left: calc(100% + 12px); bottom: 0; z-index: 50; display: grid; justify-items: center; gap: 8px; width: 224px; padding: 12px; border: 1px solid var(--glass-border-strong); border-radius: 11px; background: var(--glass-strong); box-shadow: var(--shadow); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
-.reward-card[hidden] { display: none; }
-.reward-card-title { color: var(--text); font-size: 13px; }
-.reward-card img { display: block; width: 100%; border-radius: 7px; background: #fff; }
+.contact-card-value { color: var(--text); cursor: pointer; font-size: 13px; overflow-wrap: anywhere; user-select: text; -webkit-user-select: text; }
+.contact-card-value:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; border-radius: 3px; }
 .github-card { position: absolute; left: calc(100% + 12px); bottom: 0; z-index: 50; display: grid; gap: 2px; width: 250px; padding: 10px 12px; border: 1px solid var(--glass-border-strong); border-radius: 11px; background: var(--glass-strong); box-shadow: var(--shadow); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
 .github-card[hidden] { display: none; }
 .github-card-title { color: var(--muted); font-size: 12px; }
@@ -146,19 +140,29 @@ button:hover, button.primary:hover, .action-group.ops button#delete[aria-pressed
 .toast.show { opacity: 1; }
 
 [data-tooltip]::after { position: absolute; top: 50%; left: calc(100% + 9px); z-index: 20; padding: 5px 8px; transform: translateY(-50%) translateX(-3px); border: 1px solid var(--glass-border-strong); border-radius: 7px; background: rgba(8, 25, 21, 0.9); color: var(--text); content: attr(data-tooltip); font-size: 12px; font-weight: 500; opacity: 0; pointer-events: none; transition: opacity 0.15s ease, transform 0.15s ease; white-space: nowrap; -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
-[data-tooltip]:hover::after, [data-tooltip]:focus-visible::after { opacity: 1; transform: translateY(-50%) translateX(0); }
+[data-tooltip]:focus-visible::after { opacity: 1; transform: translateY(-50%) translateX(0); }
+
+@media (hover: hover) and (pointer: fine) {
+  [data-tooltip]:hover::after { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
 
 @supports not ((backdrop-filter: blur(1px))) {
-  .sidebar, .seg, .action-group, .board, .text-input, .toast { background: #16332d; }
+  .sidebar, .seg, .action-group, .text-input, .toast { background: #16332d; }
+}
+
+@media (min-width: 561px) {
+  .app { gap: 8px; }
+  .board { justify-content: flex-start; padding-right: 0; padding-left: 0; }
 }
 
 @media (max-width: 560px) {
   .app { grid-template-columns: 60px minmax(0, 1fr); gap: 8px; padding: 8px; }
-  .sidebar { padding: 10px 5px; border-radius: 15px; }
+  .sidebar { padding: 0 5px; border-radius: 0; }
+  .toolbar { padding: 8px 0; }
   .seg { gap: 3px; padding: 4px; }
   .seg-item .control-icon { width: 38px; height: 38px; }
   .action-group { gap: 3px; padding: 4px; }
   button { width: 38px; height: 38px; min-height: 38px; }
   .board { padding: 8px; border-radius: 15px; }
-  .board > svg { height: calc(100dvh - 16px); min-height: 240px; }
+  .board > svg { height: auto; min-height: 0; }
 }

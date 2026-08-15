@@ -18,6 +18,32 @@
   let cacheTimer = null;
   let toastTimer = null;
 
+  // 手机端侧栏应与实际渲染出的场地内容对齐。场地 SVG 会因可用宽度
+  // 在容器中垂直居中，直接让侧栏拉满视口会导致上下边缘错位。
+  function syncMobileSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const toolbar = document.querySelector('.toolbar');
+    if (!sidebar || !toolbar || !svg) return;
+
+    const isMobile = window.matchMedia('(max-width: 560px)').matches;
+    if (!isMobile) {
+      sidebar.style.height = '';
+      sidebar.style.alignSelf = '';
+      return;
+    }
+
+    const svgHeight = svg.getBoundingClientRect().height;
+    if (!svgHeight) return;
+    const toolbarStyle = window.getComputedStyle(toolbar);
+    const verticalPadding = parseFloat(toolbarStyle.paddingTop) + parseFloat(toolbarStyle.paddingBottom);
+    sidebar.style.height = `${Math.ceil(svgHeight + verticalPadding)}px`;
+    sidebar.style.alignSelf = 'center';
+  }
+
+  function scheduleSidebarSync() {
+    window.requestAnimationFrame(syncMobileSidebar);
+  }
+
   // ---------- 坐标与 DOM 工具 ----------
   function clampMeters(m) {
     return window.COURT.clampMeters(m);
@@ -378,7 +404,8 @@
   }
 
   svg.addEventListener('click', function (e) {
-    if (tool !== 'text') return;
+    // 删除模式下触摸元素会继续派发 click，不能让它落入标注输入逻辑。
+    if (deleteMode || tool !== 'text') return;
     openTextInput(e);
   });
 
@@ -393,6 +420,8 @@
     deleteButton.setAttribute('aria-pressed', String(active));
     svg.classList.toggle('tool-delete', active);
     if (active) {
+      tool = 'select';
+      closeTextInput();
       document.querySelectorAll('input[name="tool"]').forEach(function (radio) { radio.checked = false; });
       svg.classList.remove('tool-arrow', 'tool-brush', 'tool-text');
       select(null);
@@ -439,13 +468,11 @@
 
   const contactButton = document.getElementById('contact-author');
   const contactCard = document.getElementById('contact-card');
-  const rewardButton = document.getElementById('reward-author');
-  const rewardCard = document.getElementById('reward-card');
+  const contactValue = contactCard.querySelector('.contact-card-value');
   const githubButton = document.getElementById('github-repo');
   const githubCard = document.getElementById('github-card');
   const authorCards = [
     { button: contactButton, card: contactCard },
-    { button: rewardButton, card: rewardCard },
     { button: githubButton, card: githubCard },
   ];
   function setAuthorCard(entry, open) {
@@ -473,10 +500,46 @@
   }
   document.addEventListener('pointerdown', closeAuthorCards, true);
   document.addEventListener('click', closeAuthorCards);
+  function fallbackCopyText(text) {
+    const input = document.createElement('textarea');
+    input.value = text;
+    input.setAttribute('readonly', '');
+    input.style.position = 'fixed';
+    input.style.opacity = '0';
+    document.body.appendChild(input);
+    input.select();
+    let copied = false;
+    try {
+      copied = document.execCommand('copy');
+    } catch (e) {
+      copied = false;
+    }
+    input.remove();
+    return copied;
+  }
+  function copyContactValue() {
+    const text = contactValue.textContent.trim();
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () {
+        showToast('已复制');
+      }).catch(function () {
+        showToast(fallbackCopyText(text) ? '已复制' : '复制失败，请长按选择文本');
+      });
+      return;
+    }
+    showToast(fallbackCopyText(text) ? '已复制' : '复制失败，请长按选择文本');
+  }
+  contactValue.addEventListener('click', copyContactValue);
+  contactValue.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      copyContactValue();
+    }
+  });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && authorCards.some(function (entry) { return !entry.card.hidden; })) {
       authorCards.forEach(function (entry) { setAuthorCard(entry, false); });
-      document.activeElement === rewardButton ? rewardButton.focus() : contactButton.focus();
+      contactButton.focus();
     }
   });
 
@@ -593,6 +656,7 @@
       if (!isTouch || !navigator.share) {
         downloadPNG(blob);
         statusEl.textContent = '已下载 PNG';
+        showToast('保存成功');
         return;
       }
       const file = new File([blob], 'badminton-tactic.png', { type: 'image/png' });
@@ -601,11 +665,10 @@
       function fallbackAfterShareFailure() {
         window.TACTIC_SHARE.copyImageToClipboard(navigator, blob).then(function (copied) {
           if (copied) {
-            showToast('图片已复制，打开微信粘贴给指定好友');
             return;
           }
           downloadPNG(blob);
-          showToast('分享失败，图片已下载');
+          showToast('保存成功');
         });
       }
 
@@ -616,7 +679,7 @@
 
       try {
         navigator.share(shareData).then(function () {
-          showToast('保存成功');
+          // 微信等分享目标完成后保持静默，避免打断转发流程。
         }).catch(function (err) {
           if (!err || err.name !== 'AbortError') fallbackAfterShareFailure();
         });
@@ -634,6 +697,13 @@
 
   // ---------- 初始化 ----------
   window.COURT.render(svg);
+  scheduleSidebarSync();
+  window.addEventListener('resize', scheduleSidebarSync, { passive: true });
+  window.addEventListener('orientationchange', scheduleSidebarSync, { passive: true });
+  if (window.ResizeObserver) {
+    const boardObserver = new ResizeObserver(scheduleSidebarSync);
+    boardObserver.observe(board);
+  }
   setTool('select');
   try {
     const saved = localStorage.getItem('badminton-tactic-board:v1');
