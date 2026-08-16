@@ -202,7 +202,9 @@
 
   function addMarker(m, team) {
     const g = el('g', { class: 'marker' });
-    const radius = team === 'shuttle' ? 11 : 15;
+    // Keep the red/blue marker area at exactly twice its previous size.
+    // Increasing the circle itself also enlarges the pointer hit target on touch devices.
+    const radius = team === 'shuttle' ? 11 : 15 * Math.SQRT2;
     g.appendChild(el('circle', { r: radius, class: 'dot ' + team }));
     const text = el('text', { class: 'label', 'text-anchor': 'middle', dy: '0.35em' });
     g.appendChild(text);

@@ -54,7 +54,7 @@ assert.match(js, /items = \[\];\s*nextId = 1;\s*select\(null\);\s*scheduleCache\
 assert.match(js, /function markerOverlaps\(m\)[\s\S]*Math\.hypot\(it\.m\.x - m\.x, it\.m\.y - m\.y\) < 0\.8/);
 assert.match(js, /function nextMarkerPosition\(team\)[\s\S]*addMarker\(nextMarkerPosition\('red'\), 'red'\)/);
 assert.match(js, /addMarker\(nextMarkerPosition\('blue'\), 'blue'\)/);
-assert.match(js, /const radius = team === 'shuttle' \? 11 : 15;/);
+assert.match(js, /const radius = team === 'shuttle' \? 11 : 15 \* Math\.SQRT2;/);
 assert.match(html, /id="delete"[^>]*aria-pressed="false"/);
 assert.match(js, /if \(deleteMode\) \{/);
 assert.match(js, /deleteButton\.addEventListener\('click'/);
