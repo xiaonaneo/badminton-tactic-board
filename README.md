@@ -4,7 +4,7 @@
 
 ## 在线使用
 
-- 生产站点：<https://badminton-tactic-board-neo111282.netlify.app>
+- 生产站点：<https://badmintonmind.netlify.app>
 - 首个正式版本：<https://github.com/xiaonaneo/badminton-tactic-board/releases/tag/v1.0.0>
 
 ## 功能
@@ -52,6 +52,7 @@ npm run dev
 - 分享内容是生成后的 PNG 图片，不是可继续编辑的战术数据文件。
 - 移动端是否能直接分享给指定好友，取决于浏览器、系统和目标应用对 Web Share 的支持。
 - 注意：使用微信内置浏览器打开战术板时，“分享战术”无法由网页直接转发给指定微信好友。可先复制战术板网页链接，在 Safari、Chrome 等独立浏览器中打开并编辑，再使用系统分享转发；是否能选择指定微信好友仍取决于设备、浏览器和微信版本的支持。
+- 如需在微信公众平台配置 JS 安全域名，可使用根目录中的 `665e0d64c8f553b491eb23b7f64c75cb.txt` 完成域名验证。
 - 清除浏览器站点数据会同时清除自动保存的战术状态。
 
 ## 场地模型
