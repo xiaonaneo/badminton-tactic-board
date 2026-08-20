@@ -62,6 +62,12 @@ assert.match(js, /if \(!items\.length\) \{[\s\S]*showToast\('当前没有可清�
 assert.match(js, /clearConfirmButton\.addEventListener\('click', clearItems\)/);
 assert.match(js, /function markActionButton\(button\)[\s\S]*classList\.toggle\('is-clicked'/);
 assert.match(js, /if \(button !== deleteButton\) setDeleteMode\(false\)/);
+assert.match(js, /function resetActionButton\(button\)[\s\S]*classList\.remove\('is-clicked'/);
+assert.match(js, /function flashResetActionButton\(button\)[\s\S]*setTimeout/);
+assert.match(js, /undoButton\.addEventListener\('click', function \(\) \{[\s\S]*flashResetActionButton\(undoButton\)/);
+assert.match(js, /flashResetActionButton\(saveButton\)/);
+assert.match(js, /resetActionButton\(clearButton\)/);
+assert.match(js, /function setAuthorCard\(entry, open\)[\s\S]*if \(!open\) resetActionButton\(entry\.button\)/);
 assert.match(css, /button\.is-clicked \.icon\s*\{[^}]*color:\s*var\(--brand\);/is);
 assert.match(js, /if \(e\.key === 'Tab' && !clearConfirmLayer\.hidden\)/);
 assert.match(js, /items = \[\];\s*nextId = 1;\s*select\(null\);\s*scheduleCache\(\);/);

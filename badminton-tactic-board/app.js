@@ -511,11 +511,21 @@
   const clearConfirmLayer = document.getElementById('clear-confirm');
   const clearCancelButton = document.getElementById('clear-cancel');
   const clearConfirmButton = document.getElementById('clear-confirm-action');
+  const saveButton = document.getElementById('save');
   const actionButtons = Array.prototype.slice.call(document.querySelectorAll('.action-group.ops button, .action-group.share button'));
   const addButtons = Array.prototype.slice.call(document.querySelectorAll('.action-group.adds button'));
 
   function markActionButton(button) {
     actionButtons.forEach(function (item) { item.classList.toggle('is-clicked', item === button); });
+  }
+
+  function resetActionButton(button) {
+    button.classList.remove('is-clicked');
+    if (document.activeElement === button) button.blur();
+  }
+
+  function flashResetActionButton(button) {
+    setTimeout(function () { resetActionButton(button); }, 350);
   }
 
   actionButtons.forEach(function (button) {
@@ -532,7 +542,7 @@
 
   function closeClearConfirm() {
     clearConfirmLayer.hidden = true;
-    clearButton.focus();
+    resetActionButton(clearButton);
   }
 
   function clearItems() {
@@ -542,11 +552,14 @@
     select(null);
     scheduleCache();
     closeClearConfirm();
+    markActionButton(clearButton);
+    flashResetActionButton(clearButton);
     showToast('已清空');
   }
 
   clearButton.addEventListener('click', function () {
     if (!items.length) {
+      resetActionButton(clearButton);
       showToast('当前没有可清空的战术');
       return;
     }
@@ -558,8 +571,12 @@
   clearConfirmLayer.addEventListener('click', function (e) {
     if (e.target === clearConfirmLayer) closeClearConfirm();
   });
-  document.getElementById('undo').addEventListener('click', undo);
-  document.getElementById('save').addEventListener('click', saveImage);
+  const undoButton = document.getElementById('undo');
+  undoButton.addEventListener('click', function () {
+    undo();
+    flashResetActionButton(undoButton);
+  });
+  saveButton.addEventListener('click', saveImage);
 
   const contactButton = document.getElementById('contact-author');
   const contactCard = document.getElementById('contact-card');
@@ -573,6 +590,7 @@
   function setAuthorCard(entry, open) {
     entry.card.hidden = !open;
     entry.button.setAttribute('aria-expanded', String(open));
+    if (!open) resetActionButton(entry.button);
   }
   function toggleAuthorCard(entry) {
     const shouldOpen = entry.card.hidden;
@@ -763,6 +781,7 @@
         downloadPNG(blob);
         statusEl.textContent = '已下载 PNG';
         showToast('保存成功');
+        flashResetActionButton(saveButton);
         return;
       }
       const file = new File([blob], 'badminton-tactic.png', { type: 'image/png' });
@@ -771,10 +790,12 @@
       function fallbackAfterShareFailure() {
         window.TACTIC_SHARE.copyImageToClipboard(navigator, blob).then(function (copied) {
           if (copied) {
+            flashResetActionButton(saveButton);
             return;
           }
           downloadPNG(blob);
           showToast('保存成功');
+          flashResetActionButton(saveButton);
         });
       }
 
@@ -786,8 +807,10 @@
       try {
         navigator.share(shareData).then(function () {
           // 微信等分享目标完成后保持静默，避免打断转发流程。
+          flashResetActionButton(saveButton);
         }).catch(function (err) {
           if (!err || err.name !== 'AbortError') fallbackAfterShareFailure();
+          else flashResetActionButton(saveButton);
         });
       } catch (e) {
         fallbackAfterShareFailure();

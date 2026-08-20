@@ -74,9 +74,10 @@ body::before {
 button { position: relative; display: grid; width: 42px; height: 42px; min-height: 42px; padding: 0; place-items: center; border: 1px solid var(--glass-border); border-radius: 11px; background: rgba(255, 255, 255, 0.055); color: var(--text); font: inherit; cursor: pointer; white-space: nowrap; transition: background 0.18s ease, border-color 0.18s ease, transform 0.05s ease, box-shadow 0.18s ease; }
 button:hover { border-color: var(--glass-border-strong); background: rgba(255, 255, 255, 0.11); box-shadow: none; }
 button:active { transform: translateY(1px); }
-button:focus, button:focus-visible { outline: none; color: var(--brand); }
-button:focus .icon, button:focus-visible .icon { color: var(--brand); filter: drop-shadow(0 0 4px rgba(196, 255, 61, 0.58)); }
-button:focus .swatch, button:focus-visible .swatch { border-color: var(--brand); box-shadow: 0 0 10px var(--brand); }
+button:focus, button:focus-visible { outline: none; }
+button:focus-visible { color: var(--brand); }
+button:focus-visible .icon { color: var(--brand); filter: drop-shadow(0 0 4px rgba(196, 255, 61, 0.58)); }
+button:focus-visible .swatch { border-color: var(--brand); box-shadow: 0 0 10px var(--brand); }
 button.is-clicked { color: var(--brand); }
 button.is-clicked .icon { color: var(--brand); filter: drop-shadow(0 0 4px rgba(196, 255, 61, 0.58)); }
 button.primary { border-color: rgba(196, 255, 61, 0.52); background: linear-gradient(135deg, var(--brand), var(--brand-strong)); color: #15220b; font-weight: 700; box-shadow: none; }
