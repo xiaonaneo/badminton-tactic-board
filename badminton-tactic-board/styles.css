@@ -77,6 +77,8 @@ button:active { transform: translateY(1px); }
 button:focus, button:focus-visible { outline: none; color: var(--brand); }
 button:focus .icon, button:focus-visible .icon { color: var(--brand); filter: drop-shadow(0 0 4px rgba(196, 255, 61, 0.58)); }
 button:focus .swatch, button:focus-visible .swatch { border-color: var(--brand); box-shadow: 0 0 10px var(--brand); }
+button.is-clicked { color: var(--brand); }
+button.is-clicked .icon { color: var(--brand); filter: drop-shadow(0 0 4px rgba(196, 255, 61, 0.58)); }
 button.primary { border-color: rgba(196, 255, 61, 0.52); background: linear-gradient(135deg, var(--brand), var(--brand-strong)); color: #15220b; font-weight: 700; box-shadow: none; }
 button.primary:hover { border-color: transparent; background: linear-gradient(135deg, #d7ff72, #a4ed4c); }
 .action-group.share button.primary { border-color: transparent; background: transparent; color: var(--green); box-shadow: none; }
@@ -157,7 +159,7 @@ button:hover, button.primary:hover, .action-group.ops button#delete[aria-pressed
 .toast.show { opacity: 1; }
 
 [data-tooltip]::after { position: absolute; top: 50%; left: calc(100% + 9px); z-index: 20; padding: 5px 8px; transform: translateY(-50%) translateX(-3px); border: 1px solid var(--glass-border-strong); border-radius: 7px; background: rgba(8, 25, 21, 0.9); color: var(--text); content: attr(data-tooltip); font-size: 12px; font-weight: 500; opacity: 0; pointer-events: none; transition: opacity 0.15s ease, transform 0.15s ease; white-space: nowrap; -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
-[data-tooltip]:focus-visible::after { opacity: 1; transform: translateY(-50%) translateX(0); }
+[data-tooltip]:focus::after, [data-tooltip]:focus-visible::after { opacity: 1; transform: translateY(-50%) translateX(0); }
 
 @media (hover: hover) and (pointer: fine) {
   [data-tooltip]:hover::after { opacity: 1; transform: translateY(-50%) translateX(0); }
@@ -175,17 +177,13 @@ button:hover, button.primary:hover, .action-group.ops button#delete[aria-pressed
 @media (max-width: 560px) {
   .app { grid-template-columns: 60px minmax(0, 1fr); gap: 8px; padding: 8px; }
   .sidebar { padding: 0 5px; border-radius: 0; }
-  .toolbar { padding: 8px 0; }
+  .toolbar { display: grid; grid-template-rows: repeat(4, max-content); align-content: space-between; padding: 8px 0; }
   .seg { gap: 3px; padding: 4px; }
   .seg-item .control-icon { width: 38px; height: 38px; }
   .action-group { gap: 3px; padding: 4px; }
-  [data-tooltip].mobile-tooltip-visible::after {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0);
-  }
   #github-repo::after,
   #contact-author::after { display: none; }
-  button { width: 44px; height: 44px; min-height: 44px; }
+  button { width: 38px; height: 38px; min-height: 38px; }
   .board { padding: 8px; border-radius: 15px; }
   .board > svg { height: auto; min-height: 0; }
 }

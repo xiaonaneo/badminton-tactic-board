@@ -511,6 +511,21 @@
   const clearConfirmLayer = document.getElementById('clear-confirm');
   const clearCancelButton = document.getElementById('clear-cancel');
   const clearConfirmButton = document.getElementById('clear-confirm-action');
+  const actionButtons = Array.prototype.slice.call(document.querySelectorAll('.action-group.ops button, .action-group.share button'));
+  const addButtons = Array.prototype.slice.call(document.querySelectorAll('.action-group.adds button'));
+
+  function markActionButton(button) {
+    actionButtons.forEach(function (item) { item.classList.toggle('is-clicked', item === button); });
+  }
+
+  actionButtons.forEach(function (button) {
+    button.addEventListener('click', function () { markActionButton(button); });
+  });
+  addButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      actionButtons.forEach(function (item) { item.classList.remove('is-clicked'); });
+    });
+  });
 
   function closeClearConfirm() {
     clearConfirmLayer.hidden = true;
@@ -542,24 +557,6 @@
   });
   document.getElementById('undo').addEventListener('click', undo);
   document.getElementById('save').addEventListener('click', saveImage);
-
-  let mobileTooltipTimer = null;
-  const mobileTooltipControls = Array.prototype.filter.call(
-    document.querySelectorAll('[data-tooltip]'),
-    function (control) { return control.id !== 'github-repo' && control.id !== 'contact-author'; }
-  );
-  mobileTooltipControls.forEach(function (control) {
-    control.addEventListener('click', function () {
-      if (!window.matchMedia('(max-width: 560px)').matches) return;
-      mobileTooltipControls.forEach(function (item) {
-        item.classList.toggle('mobile-tooltip-visible', item === control);
-      });
-      if (mobileTooltipTimer) clearTimeout(mobileTooltipTimer);
-      mobileTooltipTimer = setTimeout(function () {
-        control.classList.remove('mobile-tooltip-visible');
-      }, 1800);
-    });
-  });
 
   const contactButton = document.getElementById('contact-author');
   const contactCard = document.getElementById('contact-card');
