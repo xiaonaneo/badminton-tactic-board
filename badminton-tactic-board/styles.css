@@ -62,17 +62,17 @@ body::before {
 .seg-item { position: relative; display: block; cursor: pointer; text-align: center; user-select: none; -webkit-user-select: none; }
 .seg-item input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
 .seg-item .control-icon { position: relative; display: grid; width: 42px; height: 42px; margin: 0 auto; place-items: center; border: 1px solid transparent; border-radius: 11px; color: var(--muted); transition: 0.18s ease; }
-.seg-item:hover .control-icon { color: var(--text); background: rgba(255, 255, 255, 0.06); }
-.seg-item input:checked + .control-icon { border-color: transparent; background: var(--brand-soft); color: var(--brand); box-shadow: none; }
-.seg-item input:focus-visible + .control-icon { outline: 2px solid var(--green); outline-offset: 1px; }
+.seg-item:hover .control-icon { color: var(--text); background: transparent; }
+.seg-item input:checked + .control-icon { border-color: transparent; background: transparent; color: var(--brand); box-shadow: none; }
+.seg-item input:focus-visible + .control-icon { outline: none; }
 
 .actions { display: contents; }
 .action-group { display: grid; width: 100%; flex: 0 0 auto; grid-template-columns: 1fr; gap: 4px; justify-items: center; padding: 5px; border-radius: 15px; }
 .action-group.ops { margin-top: 0; }
 .action-group.share { position: relative; }
 
-button { position: relative; display: grid; width: 42px; height: 42px; min-height: 42px; padding: 0; place-items: center; border: 1px solid var(--glass-border); border-radius: 11px; background: rgba(255, 255, 255, 0.055); color: var(--text); font: inherit; cursor: pointer; white-space: nowrap; transition: background 0.18s ease, border-color 0.18s ease, transform 0.05s ease, box-shadow 0.18s ease; }
-button:hover { border-color: var(--glass-border-strong); background: rgba(255, 255, 255, 0.11); box-shadow: none; }
+button { position: relative; display: grid; width: 42px; height: 42px; min-height: 42px; padding: 0; place-items: center; border: 1px solid transparent; border-radius: 11px; background: transparent; color: var(--text); font: inherit; cursor: pointer; white-space: nowrap; transition: color 0.18s ease, transform 0.05s ease, filter 0.18s ease; }
+button:hover { border-color: transparent; background: transparent; box-shadow: none; }
 button:active { transform: translateY(1px); }
 button:focus, button:focus-visible { outline: none; }
 button:focus-visible { color: var(--brand); }
@@ -83,18 +83,18 @@ button.is-clicked .icon { color: var(--brand); filter: drop-shadow(0 0 4px rgba(
 button.primary { border-color: rgba(196, 255, 61, 0.52); background: linear-gradient(135deg, var(--brand), var(--brand-strong)); color: #15220b; font-weight: 700; box-shadow: none; }
 button.primary:hover { border-color: transparent; background: linear-gradient(135deg, #d7ff72, #a4ed4c); }
 .action-group.share button.primary { border-color: transparent; background: transparent; color: var(--green); box-shadow: none; }
-.action-group.share button.primary:hover { border-color: transparent; background: var(--brand-soft); box-shadow: none; }
+.action-group.share button.primary:hover { border-color: transparent; background: transparent; box-shadow: none; }
 .action-group.ops button.share-button { border-color: transparent; background: transparent; color: var(--text); box-shadow: none; }
-.action-group.ops button.share-button:hover { border-color: transparent; background: rgba(255, 255, 255, 0.06); color: var(--text); box-shadow: none; }
+.action-group.ops button.share-button:hover { border-color: transparent; background: transparent; color: var(--text); box-shadow: none; }
 .action-group.share button.contact-trigger, .action-group.share button.github-trigger { border-color: transparent; background: transparent; color: var(--text); box-shadow: none; }
-.action-group.share button.contact-trigger:hover, .action-group.share button.github-trigger:hover { border-color: transparent; background: rgba(255, 255, 255, 0.06); color: var(--text); box-shadow: none; }
-.action-group.share button.contact-trigger[aria-expanded="true"], .action-group.share button.github-trigger[aria-expanded="true"] { border-color: transparent; background: var(--brand-soft); color: var(--green); box-shadow: none; }
+.action-group.share button.contact-trigger:hover, .action-group.share button.github-trigger:hover { border-color: transparent; background: transparent; color: var(--text); box-shadow: none; }
+.action-group.share button.contact-trigger[aria-expanded="true"], .action-group.share button.github-trigger[aria-expanded="true"] { border-color: transparent; background: transparent; color: var(--green); box-shadow: none; }
 .action-group:not(.share) button { border-color: transparent; background: transparent; box-shadow: none; }
-.action-group:not(.share) button:hover { border-color: transparent; background: rgba(255, 255, 255, 0.06); box-shadow: none; }
+.action-group:not(.share) button:hover { border-color: transparent; background: transparent; box-shadow: none; }
 .action-group.adds button:focus, .action-group.adds button:focus-visible { color: var(--text); }
 .action-group.adds button:focus .swatch.red, .action-group.adds button:focus-visible .swatch.red, .action-group.adds button:focus .swatch.blue, .action-group.adds button:focus-visible .swatch.blue { border-color: rgba(255, 255, 255, 0.28); box-shadow: 0 0 10px currentColor; }
 .action-group.adds button:focus .swatch.shuttle, .action-group.adds button:focus-visible .swatch.shuttle { border-color: rgba(255, 255, 255, 0.6); box-shadow: 0 0 10px currentColor; }
-.action-group.ops button#delete[aria-pressed="true"] { border-color: transparent; background: var(--brand-soft); color: var(--brand); }
+.action-group.ops button#delete[aria-pressed="true"] { border-color: transparent; background: transparent; color: var(--brand); }
 button:hover, button.primary:hover, .action-group.ops button#delete[aria-pressed="true"]:hover { border-color: transparent; }
 .seg-item:hover input:checked + .control-icon { border-color: transparent; }
 .chip { display: grid; align-items: center; gap: 7px; }
