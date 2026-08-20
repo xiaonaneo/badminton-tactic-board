@@ -161,13 +161,6 @@ button:hover, button.primary:hover, .action-group.ops button#delete[aria-pressed
 .toast { position: fixed; bottom: 40px; left: 50%; z-index: 200; padding: 10px 20px; transform: translateX(-50%); border: 1px solid var(--glass-border-strong); border-radius: 999px; background: rgba(10, 28, 24, 0.82); color: #fff; font-size: 14px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; white-space: nowrap; -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
 .toast.show { opacity: 1; }
 
-[data-tooltip]::after { position: absolute; top: 50%; left: calc(100% + 9px); z-index: 20; padding: 5px 8px; transform: translateY(-50%) translateX(-3px); border: 1px solid var(--glass-border-strong); border-radius: 7px; background: rgba(8, 25, 21, 0.9); color: var(--text); content: attr(data-tooltip); font-size: 12px; font-weight: 500; opacity: 0; pointer-events: none; transition: opacity 0.15s ease, transform 0.15s ease; white-space: nowrap; -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
-[data-tooltip]:focus::after, [data-tooltip]:focus-visible::after { opacity: 1; transform: translateY(-50%) translateX(0); }
-
-@media (hover: hover) and (pointer: fine) {
-  [data-tooltip]:hover::after { opacity: 1; transform: translateY(-50%) translateX(0); }
-}
-
 @supports not ((backdrop-filter: blur(1px))) {
   .sidebar, .seg, .action-group, .text-input, .toast { background: #16332d; }
 }
@@ -185,8 +178,6 @@ button:hover, button.primary:hover, .action-group.ops button#delete[aria-pressed
   .seg { gap: 3px; padding: 4px; }
   .seg-item .control-icon { width: 38px; height: 38px; }
   .action-group { gap: 3px; padding: 4px; }
-  #github-repo::after,
-  #contact-author::after { display: none; }
   button { width: 38px; height: 38px; min-height: 38px; }
   .board { padding: 8px; border-radius: 15px; }
   .board > svg { height: auto; min-height: 0; }
