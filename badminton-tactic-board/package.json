@@ -1,7 +1,7 @@
 {
   "name": "badminton-tactic-board",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.1",
   "description": "纯前端羽毛球战术板",
   "scripts": {
     "dev": "python3 -m http.server 4173",

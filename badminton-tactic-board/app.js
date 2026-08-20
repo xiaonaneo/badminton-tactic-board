@@ -139,9 +139,16 @@
     scheduleCache();
   }
 
-  function markerOverlaps(m) {
+  function markerRadius(team) {
+    return team === 'shuttle' ? 11 : 15 * Math.SQRT2;
+  }
+
+  function markerOverlaps(m, team) {
+    const radius = markerRadius(team);
     return items.some(function (it) {
-      return it.kind === 'marker' && Math.hypot(it.m.x - m.x, it.m.y - m.y) < 0.8;
+      if (it.kind !== 'marker') return false;
+      const otherRadius = markerRadius(it.team);
+      return Math.hypot(it.m.x - m.x, it.m.y - m.y) < (radius + otherRadius) / window.COURT.SCALE;
     });
   }
 
@@ -151,20 +158,25 @@
         { x: 2.0, y: 1.6 }, { x: 2.0, y: 3.1 }, { x: 3.5, y: 1.6 },
         { x: 3.5, y: 3.1 }, { x: 5.0, y: 1.6 }, { x: 5.0, y: 3.1 },
       ]
-      : [
+      : team === 'blue'
+      ? [
         { x: 11.4, y: 4.5 }, { x: 11.4, y: 3.0 }, { x: 9.9, y: 4.5 },
         { x: 9.9, y: 3.0 }, { x: 8.4, y: 4.5 }, { x: 8.4, y: 3.0 },
+      ]
+      : [
+        { x: 6.7, y: 3.05 }, { x: 6.7, y: 2.0 }, { x: 6.7, y: 4.1 },
+        { x: 5.6, y: 3.05 }, { x: 7.8, y: 3.05 }, { x: 5.6, y: 2.0 },
       ];
-    const candidate = anchors.find(function (m) { return !markerOverlaps(m); });
+    const candidate = anchors.find(function (m) { return !markerOverlaps(m, team); });
     if (candidate) return candidate;
 
     for (let x = 1.0; x <= 12.4; x += 1.2) {
       for (let y = 0.8; y <= 5.3; y += 1.2) {
         const fallback = { x: x, y: y };
-        if (!markerOverlaps(fallback)) return fallback;
+        if (!markerOverlaps(fallback, team)) return fallback;
       }
     }
-    return team === 'red' ? { x: 2.0, y: 1.6 } : { x: 11.4, y: 4.5 };
+    return team === 'red' ? { x: 2.0, y: 1.6 } : team === 'blue' ? { x: 11.4, y: 4.5 } : { x: 6.7, y: 3.05 };
   }
 
   function snapshot() {
@@ -204,7 +216,7 @@
     const g = el('g', { class: 'marker' });
     // Keep the red/blue marker area at exactly twice its previous size.
     // Increasing the circle itself also enlarges the pointer hit target on touch devices.
-    const radius = team === 'shuttle' ? 11 : 15 * Math.SQRT2;
+    const radius = markerRadius(team);
     g.appendChild(el('circle', { r: radius, class: 'dot ' + team }));
     const text = el('text', { class: 'label', 'text-anchor': 'middle', dy: '0.35em' });
     g.appendChild(text);
@@ -474,26 +486,59 @@
     svg.classList.toggle('tool-brush', t === 'brush');
   }
 
+  function activateMoveTool() {
+    document.querySelector('input[name="tool"][value="select"]').checked = true;
+    setTool('select');
+  }
+
   // ---------- 控件 ----------
   document.getElementById('add-red').addEventListener('click', function () {
     addMarker(nextMarkerPosition('red'), 'red');
+    activateMoveTool();
   });
   document.getElementById('add-blue').addEventListener('click', function () {
     addMarker(nextMarkerPosition('blue'), 'blue');
+    activateMoveTool();
   });
   document.getElementById('add-shuttle').addEventListener('click', function () {
-    addMarker({ x: 6.7, y: 3.05 }, 'shuttle');
+    addMarker(nextMarkerPosition('shuttle'), 'shuttle');
+    activateMoveTool();
   });
   deleteButton.addEventListener('click', function () {
     setDeleteMode(!deleteMode);
   });
-  document.getElementById('clear').addEventListener('click', function () {
-    if (items.length && !window.confirm('确定清空当前战术吗？此操作不可撤回。')) return;
+  const clearButton = document.getElementById('clear');
+  const clearConfirmLayer = document.getElementById('clear-confirm');
+  const clearCancelButton = document.getElementById('clear-cancel');
+  const clearConfirmButton = document.getElementById('clear-confirm-action');
+
+  function closeClearConfirm() {
+    clearConfirmLayer.hidden = true;
+    clearButton.focus();
+  }
+
+  function clearItems() {
     items.forEach(function (it) { it.el.remove(); });
     items = [];
     nextId = 1;
     select(null);
     scheduleCache();
+    closeClearConfirm();
+    showToast('已清空');
+  }
+
+  clearButton.addEventListener('click', function () {
+    if (!items.length) {
+      showToast('当前没有可清空的战术');
+      return;
+    }
+    clearConfirmLayer.hidden = false;
+    clearCancelButton.focus();
+  });
+  clearCancelButton.addEventListener('click', closeClearConfirm);
+  clearConfirmButton.addEventListener('click', clearItems);
+  clearConfirmLayer.addEventListener('click', function (e) {
+    if (e.target === clearConfirmLayer) closeClearConfirm();
   });
   document.getElementById('undo').addEventListener('click', undo);
   document.getElementById('save').addEventListener('click', saveImage);
@@ -587,6 +632,17 @@
     }
   });
   document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !clearConfirmLayer.hidden) {
+      e.preventDefault();
+      closeClearConfirm();
+      return;
+    }
+    if (e.key === 'Tab' && !clearConfirmLayer.hidden) {
+      e.preventDefault();
+      if (document.activeElement === clearCancelButton) clearConfirmButton.focus();
+      else clearCancelButton.focus();
+      return;
+    }
     if (e.key === 'Escape' && authorCards.some(function (entry) { return !entry.card.hidden; })) {
       authorCards.forEach(function (entry) { setAuthorCard(entry, false); });
       contactButton.focus();
