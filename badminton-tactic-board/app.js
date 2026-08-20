@@ -519,7 +519,10 @@
   }
 
   actionButtons.forEach(function (button) {
-    button.addEventListener('click', function () { markActionButton(button); });
+    button.addEventListener('click', function () {
+      if (button !== deleteButton) setDeleteMode(false);
+      markActionButton(button);
+    });
   });
   addButtons.forEach(function (button) {
     button.addEventListener('click', function () {
