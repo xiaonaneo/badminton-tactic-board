@@ -189,3 +189,11 @@ button:hover, button.primary:hover, .action-group.ops button#delete[aria-pressed
   .board { padding: 8px; border-radius: 15px; }
   .board > svg { height: auto; min-height: 0; }
 }
+
+@media (hover: none) {
+  .toolbar button, .toolbar button:hover, .toolbar button:active { border-color: transparent; background: transparent; box-shadow: none; }
+  .action-group:not(.share) button:hover { border-color: transparent; background: transparent; }
+  .action-group.ops button.share-button:hover { border-color: transparent; background: transparent; }
+  .action-group.share button.contact-trigger:hover, .action-group.share button.github-trigger:hover { border-color: transparent; background: transparent; color: var(--text); }
+  .action-group.share button.contact-trigger.is-clicked:hover, .action-group.share button.github-trigger.is-clicked:hover, .action-group.share button.contact-trigger[aria-expanded="true"], .action-group.share button.github-trigger[aria-expanded="true"] { color: var(--brand); }
+}

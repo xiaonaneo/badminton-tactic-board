@@ -25,6 +25,9 @@ assert.match(css, /@media \(min-width: 561px\)[\s\S]*\.app\s*\{[^}]*grid-templat
 assert.match(css, /\.sidebar\s*\{[^}]*padding:\s*0 8px;[^}]*border:\s*0;[^}]*background:\s*transparent;/is);
 assert.match(css, /@media \(max-width: 560px\)[\s\S]*\.sidebar\s*\{[^}]*padding:\s*0 5px;/is);
 assert.match(css, /@media \(max-width: 560px\)[\s\S]*button\s*\{[^}]*width:\s*38px;[^}]*height:\s*38px;[^}]*min-height:\s*38px;/is);
+assert.match(css, /@media \(hover: none\)[\s\S]*\.action-group:not\(\.share\) button:hover\s*\{[^}]*background:\s*transparent;/is);
+assert.match(css, /@media \(hover: none\)[\s\S]*\.toolbar button, \.toolbar button:hover, \.toolbar button:active\s*\{[^}]*background:\s*transparent;[^}]*box-shadow:\s*none;/is);
+assert.match(css, /@media \(hover: none\)[\s\S]*contact-trigger\.is-clicked:hover[\s\S]*color:\s*var\(--brand\);/is);
 assert.match(css, /\.actions\s*\{[^}]*display:\s*contents;/is);
 assert.match(css, /\.seg,\s*\.action-group,\s*\.board\s*\{[^}]*border:/is);
 assert.match(css, /\.action-group:not\(\.share\) button\s*\{[^}]*background:\s*transparent;/is);
