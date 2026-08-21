@@ -16,6 +16,7 @@ assert.match(html, /<div class="action-group ops">[\s\S]*id="undo"[\s\S]*id="del
 assert.match(html, /<div class="action-group share">[\s\S]*id="github-repo"[\s\S]*id="contact-author"[\s\S]*id="contact-card"[\s\S]*id="github-card"[\s\S]*<\/div>/);
 assert.match(html, /<span class="contact-card-value"[^>]*role="button"[^>]*>xiaonaneo1990<\/span>/);
 assert.match(css, /\.toolbar\s*\{[^}]*justify-content:\s*space-between;/is);
+assert.match(css, /\.seg-item \.control-icon\s*\{[^}]*color:\s*#fff;/is);
 assert.match(css, /\.toolbar\s*\{[^}]*padding:\s*14px 0;/is);
 assert.match(css, /@media \(max-width: 560px\)[\s\S]*\.toolbar\s*\{[^}]*display:\s*grid;[^}]*grid-template-rows:\s*repeat\(4, max-content\);[^}]*align-content:\s*space-between;[^}]*padding:\s*8px 0;/is);
 assert.match(css, /\.board\s*\{[^}]*border:\s*0;[^}]*background:\s*transparent;[^}]*box-shadow:\s*none;/is);
