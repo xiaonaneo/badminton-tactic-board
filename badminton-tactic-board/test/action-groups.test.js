@@ -36,6 +36,7 @@ assert.match(css, /\.action-group\.ops button\.share-button\s*\{[^}]*color:\s*va
 assert.match(css, /button:hover,\s*button\.primary:hover[^}]*border-color:\s*transparent;/is);
 assert.match(css, /\.action-group:not\(\.share\) button:hover\s*\{[^}]*border-color:\s*transparent;/is);
 assert.match(css, /\.seg-item:hover input:checked \+ \.control-icon\s*\{[^}]*border-color:\s*transparent;/is);
+assert.match(css, /\.seg-item input:active \+ \.control-icon\s*\{[^}]*transform:\s*translateY\(1px\);/is);
 assert.match(css, /\.seg-item:hover \.control-icon, \.toolbar button:hover[\s\S]*color:\s*var\(--text\);[^}]*background:\s*transparent;/is);
 assert.match(css, /button\.is-clicked \.icon\s*\{[^}]*color:\s*var\(--brand\);[^}]*filter:\s*none;/is);
 assert.match(css, /\.seg-item input:checked \+ \.control-icon\s*\{[^}]*border-color:\s*transparent;/is);
